@@ -1,10 +1,11 @@
 .game-area {
-    width: 600px;
-    height: 400px;
+    width: 800px;
+    height: 600px;
     border: 2px solid #333;
     margin: 20px auto;
     position: relative;
     overflow: hidden;
+    cursor: none;
 }
 
 .game-over {

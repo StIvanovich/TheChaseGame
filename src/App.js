@@ -5,16 +5,30 @@ import "./App.css";
 
 function App() {
     const [results, setResults] = useState([]);
+    const [isGameStarted, setIsGameStarted] = useState(false);
+    const [showResults, setShowResults] = useState(false);
 
     const handleGameOver = (time) => {
         setResults([...results, time]);
+        setIsGameStarted(false);
+        setShowResults(true);
+    };
+
+    const startGame = () => {
+        setIsGameStarted(true);
+        setShowResults(false);
     };
 
     return (
         <div className="App">
             <h1>Погоня</h1>
-            <Game onGameOver={handleGameOver} />
-            <ResultTable results={results} />
+            {!isGameStarted && (
+                <button onClick={startGame} className="start-button">
+                    Начать игру
+                </button>
+            )}
+            {isGameStarted && <Game onGameOver={handleGameOver} />}
+            {showResults && <ResultTable results={results} />}
         </div>
     );
 }

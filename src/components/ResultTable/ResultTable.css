@@ -1,11 +1,18 @@
 .result-table {
     width: 300px;
     margin: 20px auto;
+    padding: 10px;
     text-align: left;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .result-table h2 {
     font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .result-table ul {
@@ -16,4 +23,5 @@
 .result-table li {
     font-size: 16px;
     margin: 5px 0;
+    color: #555;
 }

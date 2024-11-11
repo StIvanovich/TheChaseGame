@@ -1,8 +1,22 @@
 .crocodile {
     width: 40px;
     height: 40px;
-    background-color: green;
+    background-color: #228b22;
     position: absolute;
     border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     transition: transform 0.1s linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.crocodile::after {
+    content: "";
+    width: 20px;
+    height: 8px;
+    background-color: #fff;
+    position: absolute;
+    border-radius: 4px;
+    transform: translateX(15px); /* Выступающий элемент как "морда" крокодила */
 }
