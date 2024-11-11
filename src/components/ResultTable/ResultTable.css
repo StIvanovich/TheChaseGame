@@ -1,0 +1,19 @@
+.result-table {
+    width: 300px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.result-table h2 {
+    font-size: 20px;
+}
+
+.result-table ul {
+    list-style: none;
+    padding: 0;
+}
+
+.result-table li {
+    font-size: 16px;
+    margin: 5px 0;
+}
