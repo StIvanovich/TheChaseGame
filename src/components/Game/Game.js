@@ -4,16 +4,20 @@ import Mouse from "../Mouse/Mouse";
 import "./Game.css";
 
 function Game({ onGameOver }) {
-    const [crocodilePosition, setCrocodilePosition] = useState({ x: 100, y: 100 });
+    const [crocodilePosition, setCrocodilePosition] = useState({ x: 500, y: 500 });
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isGameOver, setIsGameOver] = useState(false);
     const [timer, setTimer] = useState(0);
-    const [crocodileAngle, setCrocodileAngle] = useState(0); // Угол поворота крокодила
+    const [crocodileAngle, setCrocodileAngle] = useState(0);
+    const [speed, setSpeed] = useState(2);
 
     useEffect(() => {
         let interval;
         if (!isGameOver) {
-            interval = setInterval(() => setTimer((prev) => prev + 0.1), 100);
+            interval = setInterval(() => {
+                setTimer((prev) => prev + 0.1);
+                setSpeed((prevSpeed) => prevSpeed + 0.01);
+            }, 100);
         }
         return () => clearInterval(interval);
     }, [isGameOver]);
@@ -52,7 +56,7 @@ function Game({ onGameOver }) {
 
             setCrocodileAngle(newCrocodileAngle); // Обновляем угол
 
-            const speed = 2;
+            // Используем состояние скорости (speed), которое изменяется со временем
             const newX = crocodilePosition.x + Math.cos(angle * (Math.PI / 180)) * speed;
             const newY = crocodilePosition.y + Math.sin(angle * (Math.PI / 180)) * speed;
             setCrocodilePosition({ x: newX, y: newY });
@@ -67,13 +71,14 @@ function Game({ onGameOver }) {
             const interval = setInterval(moveCrocodile, 5);
             return () => clearInterval(interval);
         }
-    }, [mousePosition, crocodilePosition, isGameOver, timer, onGameOver, crocodileAngle]);
+    }, [mousePosition, crocodilePosition, isGameOver, timer, onGameOver, crocodileAngle, speed]);
 
     return (
         <div id="game-area" className="game-area">
             {!isGameOver && <Crocodile position={crocodilePosition} angle={crocodileAngle} />}
             {!isGameOver && <Mouse position={mousePosition} />}
-            {isGameOver && <div className="game-over">Съел! Время: {timer.toFixed(1)} сек</div>}
+            {!isGameOver && <div className="timer">Время: {timer.toFixed(1)} сек</div>}
+            {isGameOver && <div className="game-over">Съеден заживо! Время: {timer.toFixed(1)} сек</div>}
         </div>
     );
 }

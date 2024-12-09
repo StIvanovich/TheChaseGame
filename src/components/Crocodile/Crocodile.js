@@ -8,7 +8,11 @@ function Crocodile({ position, angle }) {
         transform: `rotate(${angle}deg)`,
     };
 
-    return <div className="crocodile" style={style}></div>;
+    return (
+        <div className="crocodile" style={style}>
+            <img src={require("../../materials/video/croc.gif")} alt="Crocodile" className="crocodile-img" />
+        </div>
+    );
 }
 
 export default Crocodile;
