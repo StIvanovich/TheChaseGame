@@ -5,11 +5,12 @@ import "./Game.css";
 
 function Game({ onGameOver }) {
     const [crocodilePosition, setCrocodilePosition] = useState({ x: 500, y: 500 });
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0, vector: "left" });
     const [isGameOver, setIsGameOver] = useState(false);
     const [timer, setTimer] = useState(0);
     const [crocodileAngle, setCrocodileAngle] = useState(0);
     const [speed, setSpeed] = useState(2);
+    const [lustPosition, setLustPosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         let interval;
@@ -29,8 +30,15 @@ function Game({ onGameOver }) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
             } else {
-                setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top });
+                if (Math.abs(e.clientX - lustPosition.x) > Math.abs(e.clientY - lustPosition.y)) {
+                    if (e.clientX < lustPosition.x) setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "left" });
+                    else setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "right" });
+                } else {
+                    if (e.clientY < lustPosition.y) setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "up" });
+                    else setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "down" });
+                }
             }
+            setLustPosition({ x: e.clientX, y: e.clientY });
         };
 
         if (!isGameOver) {
