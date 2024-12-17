@@ -1,11 +1,14 @@
 .game-area {
-    width: 800px;
-    height: 600px;
+    width: 90vw; /* Ширина 90% от ширины окна */
+    height: 70vh; /* Высота 70% от высоты окна */
+    max-width: 1200px; /* Максимальная ширина для больших экранов */
+    max-height: 800px; /* Максимальная высота для больших экранов */
     border: 2px solid #333;
     margin: 20px auto;
     position: relative;
     overflow: hidden;
     cursor: none;
+    background-color: rgba(0, 0, 0, 0.5); /* Добавляем фон для лучшей видимости */
 }
 
 .game-over {
@@ -13,17 +16,18 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+    font-size: 3vw; /* Шрифт адаптивен к ширине окна */
     color: red;
+    text-align: center;
 }
 
 .timer {
     position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 18px;
+    font-size: 1.5vw; /* Шрифт адаптивен к ширине окна */
     color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 10px;
     border-radius: 5px;
 }
