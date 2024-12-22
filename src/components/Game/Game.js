@@ -23,6 +23,7 @@ function Game({ onGameOver }) {
         return () => clearInterval(interval);
     }, [isGameOver]);
 
+    // Обработчики для mousemove и touchmove
     useEffect(() => {
         const handleMouseMove = (e) => {
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
@@ -41,11 +42,41 @@ function Game({ onGameOver }) {
             setLustPosition({ x: e.clientX, y: e.clientY });
         };
 
+        // Слушатель для mousemove (для ПК)
         if (!isGameOver) {
             window.addEventListener("mousemove", handleMouseMove);
         }
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [isGameOver, timer, onGameOver]);
+
+        // Слушатель для touchmove (для мобильных устройств)
+        const handleTouchMove = (e) => {
+            const touch = e.touches[0]; // Получаем первый палец
+            const gameArea = document.getElementById("game-area").getBoundingClientRect();
+            if (touch.pageX < gameArea.left || touch.pageX > gameArea.right || touch.pageY < gameArea.top || touch.pageY > gameArea.bottom) {
+                setIsGameOver(true);
+                onGameOver(timer.toFixed(1));
+            } else {
+                if (Math.abs(touch.pageX - lustPosition.x) > Math.abs(touch.pageY - lustPosition.y)) {
+                    if (touch.pageX < lustPosition.x) setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "left" });
+                    else setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "right" });
+                } else {
+                    if (touch.pageY < lustPosition.y) setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "up" });
+                    else setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "down" });
+                }
+            }
+            setLustPosition({ x: touch.pageX, y: touch.pageY });
+        };
+
+        if (!isGameOver) {
+            window.addEventListener("mousemove", handleMouseMove);
+            window.addEventListener("touchmove", handleTouchMove);
+        }
+
+        // Очистка после размонтирования компонента
+        return () => {
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("touchmove", handleTouchMove);
+        };
+    }, [isGameOver, timer, onGameOver, lustPosition]);
 
     useEffect(() => {
         const moveCrocodile = () => {
