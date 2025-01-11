@@ -4,8 +4,10 @@
 }
 
 .start-button {
-    font-size: 18px;
-    padding: 10px 20px;
+    /* font-size: 18px; */
+    font-size: min(3vw, 3vh);
+
+    padding: min(3vw, 3vh);
     cursor: pointer;
     margin-bottom: 20px;
     background-color: #28a745;
@@ -13,6 +15,7 @@
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s;
+    margin-top: min(3vw, 3vh);
 }
 
 .start-button:hover {
@@ -22,16 +25,18 @@
 .restart-button {
     margin-left: 10vw;
     margin-top: 35vh;
-    width: 20%;
-    height: 30%;
-    padding: 10px 20px;
+    height: 10vh;
+    width: 30vw;
+
+    /* width: min(6vw, 6vh); */
+    font-size: min(2vw, 3vh);
     background-color: #5ec62d;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 10%;
     cursor: pointer;
     transition: background-color 0.3s;
+    padding: 1vw;
 }
 
 .restart-button:hover {
@@ -55,36 +60,14 @@
 }
 
 .rules {
-    max-width: 800px;
-    width: 90%;
-    margin: 20px auto;
-    padding: 20px;
+    width: 70%;
+    margin: min(1vw, 1vh) auto;
+    padding: min(1vw, 1vh);
     background-color: rgba(83, 189, 118, 0.7);
     color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    font-size: 1.2rem;
+
+    font-size: min(3vw, 3vh);
     line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-    .rules {
-        font-size: 1rem;
-        padding: 15px;
-    }
-
-    .rules h2 {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .rules {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
-
-    .rules h2 {
-        font-size: 1.3rem;
-    }
 }

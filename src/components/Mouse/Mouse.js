@@ -4,6 +4,7 @@ import "../../materials/video/animVL.gif";
 function Mouse({ position }) {
     let a = require("../../materials/video/animVL.gif");
     const style = {
+        width: "min(5vw, 10vh)",
         position: "absolute",
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -22,7 +23,6 @@ function Mouse({ position }) {
             a = require("../../materials/video/animVN.gif");
             break;
     }
-    console.log(a);
     return <img style={style} src={a}></img>;
 }
 

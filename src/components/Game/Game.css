@@ -25,7 +25,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 1.5vw; /* Шрифт адаптивен к ширине окна */
+    font-size: min(2vw, 2vh); /* Шрифт адаптивен к ширине окна */
     color: white;
     background-color: rgba(0, 0, 0, 0.7);
     padding: 10px;

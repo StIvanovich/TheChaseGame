@@ -4,12 +4,12 @@ import Mouse from "../Mouse/Mouse";
 import "./Game.css";
 
 function Game({ onGameOver }) {
-    const [crocodilePosition, setCrocodilePosition] = useState({ x: 500, y: 500 });
+    const [crocodilePosition, setCrocodilePosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 3 });
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0, vector: "left" });
     const [isGameOver, setIsGameOver] = useState(false);
     const [timer, setTimer] = useState(0);
     const [crocodileAngle, setCrocodileAngle] = useState(0);
-    const [speed, setSpeed] = useState(2);
+    const [speed, setSpeed] = useState(Math.min(window.innerWidth / 1000, window.innerHeight / 100));
     const [lustPosition, setLustPosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -17,7 +17,7 @@ function Game({ onGameOver }) {
         if (!isGameOver) {
             interval = setInterval(() => {
                 setTimer((prev) => prev + 0.1);
-                setSpeed((prevSpeed) => prevSpeed + 0.01);
+                setSpeed((prevSpeed) => prevSpeed + Math.min(window.innerWidth / 15000, window.innerHeight / 15000));
             }, 100);
         }
         return () => clearInterval(interval);
@@ -27,16 +27,29 @@ function Game({ onGameOver }) {
     useEffect(() => {
         const handleMouseMove = (e) => {
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
-            if (e.clientX < gameArea.left || e.clientX > gameArea.right || e.clientY < gameArea.top || e.clientY > gameArea.bottom) {
+            if (
+                e.clientX < gameArea.left ||
+                e.clientX > gameArea.right ||
+                e.clientY < gameArea.top ||
+                e.clientY > gameArea.bottom
+            ) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
             } else {
                 if (Math.abs(e.clientX - lustPosition.x) > Math.abs(e.clientY - lustPosition.y)) {
-                    if (e.clientX < lustPosition.x) setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "left" });
-                    else setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "right" });
+                    if (e.clientX < lustPosition.x)
+                        setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "left" });
+                    else
+                        setMousePosition({
+                            x: e.clientX - gameArea.left,
+                            y: e.clientY - gameArea.top,
+                            vector: "right",
+                        });
                 } else {
-                    if (e.clientY < lustPosition.y) setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "up" });
-                    else setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "down" });
+                    if (e.clientY < lustPosition.y)
+                        setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "up" });
+                    else
+                        setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "down" });
                 }
             }
             setLustPosition({ x: e.clientX, y: e.clientY });
@@ -51,16 +64,41 @@ function Game({ onGameOver }) {
         const handleTouchMove = (e) => {
             const touch = e.touches[0]; // Получаем первый палец
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
-            if (touch.pageX < gameArea.left || touch.pageX > gameArea.right || touch.pageY < gameArea.top || touch.pageY > gameArea.bottom) {
+            if (
+                touch.pageX < gameArea.left ||
+                touch.pageX > gameArea.right ||
+                touch.pageY < gameArea.top ||
+                touch.pageY > gameArea.bottom
+            ) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
             } else {
                 if (Math.abs(touch.pageX - lustPosition.x) > Math.abs(touch.pageY - lustPosition.y)) {
-                    if (touch.pageX < lustPosition.x) setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "left" });
-                    else setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "right" });
+                    if (touch.pageX < lustPosition.x)
+                        setMousePosition({
+                            x: touch.pageX - gameArea.left,
+                            y: touch.pageY - gameArea.top,
+                            vector: "left",
+                        });
+                    else
+                        setMousePosition({
+                            x: touch.pageX - gameArea.left,
+                            y: touch.pageY - gameArea.top,
+                            vector: "right",
+                        });
                 } else {
-                    if (touch.pageY < lustPosition.y) setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "up" });
-                    else setMousePosition({ x: touch.pageX - gameArea.left, y: touch.pageY - gameArea.top, vector: "down" });
+                    if (touch.pageY < lustPosition.y)
+                        setMousePosition({
+                            x: touch.pageX - gameArea.left,
+                            y: touch.pageY - gameArea.top,
+                            vector: "up",
+                        });
+                    else
+                        setMousePosition({
+                            x: touch.pageX - gameArea.left,
+                            y: touch.pageY - gameArea.top,
+                            vector: "down",
+                        });
                 }
             }
             setLustPosition({ x: touch.pageX, y: touch.pageY });
@@ -98,9 +136,13 @@ function Game({ onGameOver }) {
             // Используем состояние скорости (speed), которое изменяется со временем
             const newX = crocodilePosition.x + Math.cos(angle * (Math.PI / 180)) * speed;
             const newY = crocodilePosition.y + Math.sin(angle * (Math.PI / 180)) * speed;
+            // const newX = crocodilePosition.x * speed;
+            // const newY = crocodilePosition.y * speed;
             setCrocodilePosition({ x: newX, y: newY });
 
-            if (Math.hypot(dx, dy) < 20) {
+            const distance = Math.hypot(dx, dy);
+            const threshold = Math.min(window.innerWidth, window.innerHeight) * 0.02; // 2% of the smaller dimension
+            if (distance < threshold) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
             }
