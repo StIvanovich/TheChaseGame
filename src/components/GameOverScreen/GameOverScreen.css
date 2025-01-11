@@ -37,7 +37,7 @@
 }
 
 .game-over-screen input {
-    padding: 15px;
+    padding: 1vw;
     font-size: 18px;
     margin-bottom: 20px;
     border: none;
@@ -55,8 +55,7 @@
 }
 
 .submit-button {
-    padding: 15px 20px;
-    font-size: 18px;
+    padding-top: min(3vw, 3vh);
     font-weight: bold;
     color: white;
     background: linear-gradient(135deg, #b2eb20, #175808);

@@ -32,12 +32,18 @@ function App() {
         <div className="App">
             <BackgroundMusic isPlaying={isGameStarted && !isGameOver} />
             <div className="jungle">
-                <video className="jungle-video" src={require("../src/materials/video/jungle.mp4")} autoPlay loop muted></video>
+                <video
+                    className="jungle-video"
+                    src={require("../src/materials/video/jungle.mp4")}
+                    autoPlay
+                    loop
+                    muted
+                ></video>
             </div>
             {!isGameStarted && !isGameOver && !showResults && (
                 <div>
                     <div class="rules">
-                        <h2>Правила игры</h2>
+                        <h2 style={{ fontSize: "min(4vw, 4vh)" }}>Правила игры</h2>
                         <p>Вы управляете мышкой, а крокодил пытается вас поймать. Задача: не попадаться!</p>
                         <ul>
                             <li>Перемещайте курсор внутри игрового поля.</li>
@@ -53,7 +59,7 @@ function App() {
             {isGameStarted && <Game onGameOver={handleGameOver} />}
             {isGameOver && <GameOverScreen time={finalTime} onSubmitName={handleNameSubmit} />}
             {showResults && (
-                <div style={{ display: "flex" }}>
+                <div style={{ display: "flex", height: "80vh", width: "70vw" }}>
                     <ResultTable />
                     <button onClick={startGame} className="restart-button">
                         Начать заново

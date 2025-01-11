@@ -12,9 +12,9 @@ function ResultTable() {
 
     return (
         <div className="result-table">
-            <h2>Результаты</h2>
+            <h2 style={{ fontSize: "min(2vw, 3vh)", margin: "1vw" }}>Результаты</h2>
             <table>
-                <thead>
+                <thead style={{ fontSize: "min(2vw, 3vh)" }}>
                     <tr>
                         <th>№</th>
                         <th>Имя</th>
@@ -23,7 +23,7 @@ function ResultTable() {
                 </thead>
                 <tbody>
                     {results.map((result, index) => (
-                        <tr key={index}>
+                        <tr key={index} style={{ fontSize: "min(2vw, 3vh)", height: "min(6.5vh, 6.5vw)" }}>
                             <td>{index + 1}</td>
                             <td>{result.name}</td>
                             <td>{result.time}</td>

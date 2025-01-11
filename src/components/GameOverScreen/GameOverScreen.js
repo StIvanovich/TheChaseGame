@@ -14,13 +14,24 @@ function GameOverScreen({ onSubmitName, time }) {
 
     return (
         <div className="game-over-screen">
-            <h2>Игра окончена!</h2>
-            <form onSubmit={handleSubmit}>
+            <h2 style={{ fontSize: "min(5vw, 7vh)", margin: 0 }}>Игра окончена!</h2>
+            <form onSubmit={handleSubmit} style={{ fontSize: "min(2vw, 3vh)", width: "min(30vw, 30vh)" }}>
                 <label>
                     Введите ваше имя:
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ваше имя" required />
+                    <input
+                        style={{ fontSize: "min(2vw, 3vh)", width: "100%" }}
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Ваше имя"
+                        required
+                    />
                 </label>
-                <button type="submit" className="submit-button">
+                <button
+                    type="submit"
+                    className="submit-button"
+                    style={{ fontSize: "min(2vw, 3vh)", padding: "1vw", margin: 0 }}
+                >
                     Сохранить результат
                 </button>
             </form>
