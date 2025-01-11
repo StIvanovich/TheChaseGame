@@ -17,7 +17,7 @@ function Game({ onGameOver }) {
         if (!isGameOver) {
             interval = setInterval(() => {
                 setTimer((prev) => prev + 0.1);
-                setSpeed((prevSpeed) => prevSpeed + Math.min(window.innerWidth / 15000, window.innerHeight / 15000));
+                setSpeed((prevSpeed) => prevSpeed + Math.min(window.innerWidth / 20000, window.innerHeight / 20000));
             }, 100);
         }
         return () => clearInterval(interval);
@@ -27,18 +27,12 @@ function Game({ onGameOver }) {
     useEffect(() => {
         const handleMouseMove = (e) => {
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
-            if (
-                e.clientX < gameArea.left ||
-                e.clientX > gameArea.right ||
-                e.clientY < gameArea.top ||
-                e.clientY > gameArea.bottom
-            ) {
+            if (e.clientX < gameArea.left || e.clientX > gameArea.right || e.clientY < gameArea.top || e.clientY > gameArea.bottom) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
             } else {
                 if (Math.abs(e.clientX - lustPosition.x) > Math.abs(e.clientY - lustPosition.y)) {
-                    if (e.clientX < lustPosition.x)
-                        setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "left" });
+                    if (e.clientX < lustPosition.x) setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "left" });
                     else
                         setMousePosition({
                             x: e.clientX - gameArea.left,
@@ -46,10 +40,8 @@ function Game({ onGameOver }) {
                             vector: "right",
                         });
                 } else {
-                    if (e.clientY < lustPosition.y)
-                        setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "up" });
-                    else
-                        setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "down" });
+                    if (e.clientY < lustPosition.y) setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "up" });
+                    else setMousePosition({ x: e.clientX - gameArea.left, y: e.clientY - gameArea.top, vector: "down" });
                 }
             }
             setLustPosition({ x: e.clientX, y: e.clientY });
@@ -64,12 +56,7 @@ function Game({ onGameOver }) {
         const handleTouchMove = (e) => {
             const touch = e.touches[0]; // Получаем первый палец
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
-            if (
-                touch.pageX < gameArea.left ||
-                touch.pageX > gameArea.right ||
-                touch.pageY < gameArea.top ||
-                touch.pageY > gameArea.bottom
-            ) {
+            if (touch.pageX < gameArea.left || touch.pageX > gameArea.right || touch.pageY < gameArea.top || touch.pageY > gameArea.bottom) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
             } else {
@@ -141,7 +128,7 @@ function Game({ onGameOver }) {
             setCrocodilePosition({ x: newX, y: newY });
 
             const distance = Math.hypot(dx, dy);
-            const threshold = Math.min(window.innerWidth, window.innerHeight) * 0.02; // 2% of the smaller dimension
+            const threshold = Math.min(window.innerWidth, window.innerHeight) * 0.05;
             if (distance < threshold) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
