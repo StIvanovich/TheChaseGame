@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Crocodile from "../Crocodile/Crocodile";
 import Mouse from "../Mouse/Mouse";
 import "./Game.css";
+import StartTimer from "../StartTimer/StartTimer";
 
 function Game({ onGameOver }) {
     const [crocodilePosition, setCrocodilePosition] = useState({ x: window.innerWidth / 2, y: window.innerHeight / 3 });
@@ -12,26 +13,30 @@ function Game({ onGameOver }) {
     const [speed, setSpeed] = useState(Math.min(window.innerWidth / 1000, window.innerHeight / 100));
     const [lustPosition, setLustPosition] = useState({ x: 0, y: 0 });
 
+    const [isGameStarted, setIsGameStarted] = useState(false);
+
     useEffect(() => {
         let interval;
         if (!isGameOver) {
             interval = setInterval(() => {
+                if (!isGameStarted) return;
+
                 setTimer((prev) => prev + 0.1);
-                setSpeed((prevSpeed) => prevSpeed + Math.min(window.innerWidth / 15000, window.innerHeight / 15000));
+                setSpeed((prevSpeed) => prevSpeed + Math.min(prevSpeed * 0.005, window.innerWidth / 1000));
             }, 100);
         }
         return () => clearInterval(interval);
-    }, [isGameOver]);
+    }, [isGameOver, isGameStarted]);
 
-    // Обработчики для mousemove и touchmove
     useEffect(() => {
         const handleMouseMove = (e) => {
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
             if (
-                e.clientX < gameArea.left ||
-                e.clientX > gameArea.right ||
-                e.clientY < gameArea.top ||
-                e.clientY > gameArea.bottom
+                (e.clientX < gameArea.left ||
+                    e.clientX > gameArea.right ||
+                    e.clientY < gameArea.top ||
+                    e.clientY > gameArea.bottom) &&
+                isGameStarted
             ) {
                 setIsGameOver(true);
                 onGameOver(timer.toFixed(1));
@@ -62,6 +67,8 @@ function Game({ onGameOver }) {
 
         // Слушатель для touchmove (для мобильных устройств)
         const handleTouchMove = (e) => {
+            if (!isGameStarted) return;
+
             const touch = e.touches[0]; // Получаем первый палец
             const gameArea = document.getElementById("game-area").getBoundingClientRect();
             if (
@@ -114,9 +121,11 @@ function Game({ onGameOver }) {
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("touchmove", handleTouchMove);
         };
-    }, [isGameOver, timer, onGameOver, lustPosition]);
+    }, [isGameOver, timer, onGameOver, lustPosition, isGameStarted]);
 
     useEffect(() => {
+        if (!isGameStarted) return;
+
         const moveCrocodile = () => {
             const dx = mousePosition.x - crocodilePosition.x;
             const dy = mousePosition.y - crocodilePosition.y;
@@ -152,7 +161,11 @@ function Game({ onGameOver }) {
             const interval = setInterval(moveCrocodile, 5);
             return () => clearInterval(interval);
         }
-    }, [mousePosition, crocodilePosition, isGameOver, timer, onGameOver, crocodileAngle, speed]);
+    }, [mousePosition, crocodilePosition, isGameOver, timer, onGameOver, crocodileAngle, speed, isGameStarted]);
+
+    const handleTimerEnd = useCallback(() => {
+        setIsGameStarted(true);
+    }, []);
 
     return (
         <div id="game-area" className="game-area">
@@ -160,6 +173,7 @@ function Game({ onGameOver }) {
             {!isGameOver && <Mouse position={mousePosition} />}
             {!isGameOver && <div className="timer">Время: {timer.toFixed(1)} сек</div>}
             {isGameOver && <div className="game-over">Съеден заживо! Время: {timer.toFixed(1)} сек</div>}
+            <StartTimer onTimerEnd={handleTimerEnd} />
         </div>
     );
 }

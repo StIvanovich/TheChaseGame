@@ -1,0 +1,34 @@
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.timer-text {
+    font-size: min(30vh, 30vw);
+    font-weight: bold;
+    color: #fff;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.fade-out .timer-text {
+    opacity: 0;
+    animation: fadeOut 0.8s ease forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
